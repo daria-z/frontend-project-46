@@ -1,0 +1,21 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "учебный проект \"Вычислитель отличий\"",
+  "scripts": {
+    "test": "npm test"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daria-z/frontend-project-46.git"
+  },
+  "author": "Daria Zakirova",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "jest": "^29.7.0"
+  }
+}
