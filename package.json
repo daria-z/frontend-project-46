@@ -2,8 +2,9 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "учебный проект \"Вычислитель отличий\"",
+  "main": "index.js",
   "bin": {
-    "gendiff": "./gendiff.js"
+    "gendiff": "./bin/gendiff.js"
   },
   "type": "module",
   "repository": {
