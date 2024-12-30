@@ -1,6 +1,6 @@
 
 import { Command } from 'commander';
-import readFile from './readFile.js';
+import findDiff from './findDiff.js';
 
 const program = new Command();
 
@@ -12,7 +12,7 @@ export default () => {
     .option('-f, --format [type]', 'output format')
     .arguments('<path1> <path2>')
     .action((path1, path2) => {
-      readFile(path1, path2);
+      console.log(findDiff(path1, path2));
     });
 
   return program;
