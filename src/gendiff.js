@@ -1,6 +1,6 @@
 
 import { Command } from 'commander';
-import readFile from './parse.js';
+import readFile from './readFile.js';
 
 const program = new Command();
 
