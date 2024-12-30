@@ -1,4 +1,3 @@
-
 import { Command } from 'commander';
 import findDiff from './findDiff.js';
 
