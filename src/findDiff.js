@@ -31,5 +31,5 @@ export default (path1, path2) => {
   if (path1.split('.').reverse()[0] === 'json') {
     return findDiff(JSON.parse(file1), JSON.parse(file2));
   }
-  return ''; //продумать что возвращается по-дефолту
+  return '';
 };
