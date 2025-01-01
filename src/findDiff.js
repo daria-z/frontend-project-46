@@ -6,7 +6,7 @@ const findDiff = (obj1, obj2) => {
   const keysArray = union(keys(obj1), keys(obj2)).sort();
 
   const formString = (sym, key, value) => [`  ${sym} ${key}: ${value}`];
-  const resultToString = (array) => `\n{\n${array.join('\n')}\n}\n`;
+  const resultToString = (array) => `\n{\n${array.join('\n')}\n}\n`.toString();
 
   keysArray.forEach((key) => {
     if (keys(obj1).includes(key) && keys(obj2).includes(key)) {
@@ -20,7 +20,6 @@ const findDiff = (obj1, obj2) => {
       resultData.push(formString('+', [key], obj2[key]));
     }
   });
-
   return resultToString(resultData);
 };
 
