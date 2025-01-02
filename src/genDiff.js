@@ -1,4 +1,4 @@
-import parseFiles from './parseFiles.js';
+import parseFiles from './parsers.js';
 import findDiff from './findDiff.js';
 
 export default (path1, path2) => {
