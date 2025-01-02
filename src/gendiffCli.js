@@ -1,6 +1,7 @@
 import path from 'path';
 import { Command } from 'commander';
 import gendiff from './genDiff.js';
+import transformToString from './transformToString.js';
 
 const program = new Command();
 
@@ -12,12 +13,10 @@ export default () => {
     .option('-f, --format [type]', 'output format')
     .arguments('<path1> <path2>')
     .action((path1, path2) => {
-      // Преобразование путей в абсолютные
       const absolutePath1 = path.resolve(process.cwd(), path1);
       const absolutePath2 = path.resolve(process.cwd(), path2);
 
-      // Вызов функции сравнения
-      console.log(gendiff(absolutePath1, absolutePath2));
+      console.log(transformToString(gendiff(absolutePath1, absolutePath2)));
     });
 
   return program;
