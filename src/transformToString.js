@@ -1,11 +1,20 @@
-export default (diff) => {
-  const formString = (sym, key, value) => [`  ${sym} ${key}: ${value}`];
-  const resultToString = (array) => `{\n${array.join('\n')}\n}`.toString();
+const formatString = ([key, obj]) => {
+  const {
+    status, value, oldValue = null, newValue = null,
+  } = obj;
 
-  const result = diff.map((item) => {
-    const [sym, key, value] = item;
-    return formString(sym, key, value);
-  });
-
-  return resultToString(result);
+  switch (status) {
+    case 'unchanged':
+      return `    ${key}: ${value}`;
+    case 'changed':
+      return `  - ${key}: ${oldValue}\n  + ${key}: ${newValue}`;
+    case 'deleted':
+      return `  - ${key}: ${value}`;
+    case 'added':
+      return `  + ${key}: ${value}`;
+    default:
+      return 'error';
+  }
 };
+
+export default formatString;
