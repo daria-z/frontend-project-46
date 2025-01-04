@@ -1,63 +1,152 @@
 import findDiff from '../src/findDiff.js';
 
-test('findDiff correct working', () => {
-  const obj1 = {
-    host: 'hexlet.io',
-    timeout: 50,
-    proxy: '123.234.53.22',
-    follow: false,
-    verbose: false,
+test('unchanged', () => {
+  const file1 = {
+    key1: 'value1',
+    key2: 'value2',
   };
 
-  const obj2 = {
-    timeout: 20,
-    verbose: true,
-    host: 'hexlet.io',
+  const file2 = {
+    key1: 'value1',
+    key2: 'value2',
   };
 
-  const expected = [
-    ['-', 'follow', false],
-    [' ', 'host', 'hexlet.io'],
-    ['-', 'proxy', '123.234.53.22'],
-    ['-', 'timeout', 50],
-    ['+', 'timeout', 20],
-    ['-', 'verbose', false],
-    ['+', 'verbose', true],
-  ];
-
-  expect(expected).toEqual(findDiff(obj1, obj2));
-});
-
-test('empty files', () => {
-  const obj1 = {};
-  const obj2 = {};
-
-  expect(findDiff(obj1, obj2)).toEqual([]);
-});
-
-test('one empty file', () => {
-  const obj1 = {};
-  const obj2 = {
-    timeout: 20,
-    verbose: true,
+  const expected = {
+    key1: { status: 'unchanged', value: 'value1' },
+    key2: { status: 'unchanged', value: 'value2' },
   };
 
-  expect(findDiff(obj1, obj2)).toEqual([
-    ['+', 'timeout', 20],
-    ['+', 'verbose', true],
-  ]);
+  expect(findDiff(file1, file2)).toEqual(expected);
 });
 
-// const path1 = './__fixtures__/file1.json';
-// const path2 = './__fixtures__/file2.json';
-// const result = fs.readFileSync('./__fixtures__/result.txt').toString();
+test('added', () => {
+  const file1 = {
+    key1: 'value1',
+  };
 
-// test('is string', () => {
-//   const diffResult = findDiff(path1, path2);
-//   expect(typeof diffResult).toBe('string');
-// });
+  const file2 = {
+    key1: 'value1',
+    key2: 'value2',
+  };
 
-// test('same result', () => {
-//   const diffResult = findDiff(path1, path2);
-//   expect(diffResult).toEqual(result);
-// });
+  const expected = {
+    key1: { status: 'unchanged', value: 'value1' },
+    key2: { status: 'added', value: 'value2' },
+  };
+
+  expect(findDiff(file1, file2)).toEqual(expected);
+});
+
+test('deleted', () => {
+  const file1 = {
+    key1: 'value1',
+    key2: 'value2',
+  };
+
+  const file2 = {
+    key1: 'value1',
+  };
+
+  const expected = {
+    key1: { status: 'unchanged', value: 'value1' },
+    key2: { status: 'deleted', value: 'value2' },
+  };
+
+  expect(findDiff(file1, file2)).toEqual(expected);
+});
+
+test('deep difference', () => {
+  const file1 = {
+    common: {
+      setting1: 'Value 1',
+      setting6: {
+        key1: 'value1',
+        doge: {
+          wow: '',
+        },
+      },
+    },
+    group1: {
+      baz: 'bas',
+      foo: 'bar',
+      nest: {
+        key: 'value',
+      },
+    },
+    group2: {
+      abc: 12345,
+      deep: {
+        id: 45,
+      },
+    },
+  };
+
+  const file2 = {
+    common: {
+      follow: false,
+      setting3: null,
+      setting4: 'blah blah',
+      setting5: {
+        key5: 'value5',
+      },
+      setting6: {
+        key1: 'value1',
+        ops: 'vops',
+        doge: {
+          wow: 'so much',
+        },
+      },
+    },
+    group1: {
+      baz: 'bars',
+      foo: 'bar',
+      nest: 'str',
+    },
+    group3: {
+      deep: {
+        id: {
+          number: 45,
+        },
+      },
+      fee: 100500,
+    },
+  };
+
+  const expected = {
+    common: {
+      follow: { status: 'added', value: false },
+      setting1: { status: 'deleted', value: 'Value 1' },
+      setting3: { status: 'added', value: null },
+      setting4: { status: 'added', value: 'blah blah' },
+      setting5: { status: 'added', value: { key5: 'value5' } },
+      setting6: {
+        key1: { status: 'unchanged', value: 'value1' },
+        ops: { status: 'added', value: 'vops' },
+        doge: {
+          wow: { status: 'changed', oldValue: '', newValue: 'so much' },
+        },
+      },
+    },
+    group1: {
+      baz: { status: 'changed', oldValue: 'bas', newValue: 'bars' },
+      foo: { status: 'unchanged', value: 'bar' },
+      nest: { status: 'changed', oldValue: { key: 'value' }, newValue: 'str' },
+    },
+    group2: {
+      status: 'deleted',
+      value: {
+        abc: 12345,
+        deep: { id: 45 },
+      },
+    },
+    group3: {
+      status: 'added',
+      value: {
+        deep: { id: { number: 45 } },
+        fee: 100500,
+      },
+    },
+  };
+
+  expect(findDiff(file1, file2)).toEqual(expected);
+});
