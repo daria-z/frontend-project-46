@@ -1,8 +1,6 @@
-const formatString = ([key, obj]) => {
-  const {
-    status, value, oldValue = null, newValue = null,
-  } = obj;
-
+export const formatString = (key, {
+  status, value, oldValue, newValue,
+}) => {
   switch (status) {
     case 'unchanged':
       return `    ${key}: ${value}`;
@@ -17,4 +15,22 @@ const formatString = ([key, obj]) => {
   }
 };
 
-export default formatString;
+const transformToString = (obj) => {
+  const arrayOfLines = Object.entries(obj);
+
+  const formatLines = arrayOfLines.map(([key, {
+    status, value, oldValue, newValue,
+  }]) => {
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+      return formatString(key, {
+        status, value, oldValue, newValue,
+      });
+    }
+
+    return `${key}: {\n${transformToString(value)}\n}`;
+  });
+
+  return `{\n${formatLines.join('\n')}\n}`;
+};
+
+export default transformToString;
