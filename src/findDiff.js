@@ -10,7 +10,7 @@ const findDiff = (obj1, obj2) => {
 
     if (oldList && newList) {
       if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
-        result[key] = findDiff(obj1[key], obj2[key]);
+        result[key] = { status: 'unchanged', value: findDiff(obj1[key], obj2[key]) };
       } else if (obj1[key] === obj2[key]) {
         result[key] = { status: 'unchanged', value: obj1[key] };
       } else {
