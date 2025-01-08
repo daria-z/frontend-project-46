@@ -114,23 +114,35 @@ test('deep difference', () => {
 
   const expected = {
     common: {
-      follow: { status: 'added', value: false },
-      setting1: { status: 'deleted', value: 'Value 1' },
-      setting3: { status: 'added', value: null },
-      setting4: { status: 'added', value: 'blah blah' },
-      setting5: { status: 'added', value: { key5: 'value5' } },
-      setting6: {
-        key1: { status: 'unchanged', value: 'value1' },
-        ops: { status: 'added', value: 'vops' },
-        doge: {
-          wow: { status: 'changed', oldValue: '', newValue: 'so much' },
+      status: 'object',
+      value: {
+        follow: { status: 'added', value: false },
+        setting1: { status: 'deleted', value: 'Value 1' },
+        setting3: { status: 'added', value: null },
+        setting4: { status: 'added', value: 'blah blah' },
+        setting5: { status: 'added', value: { key5: 'value5' } },
+        setting6: {
+          status: 'object',
+          value: {
+            key1: { status: 'unchanged', value: 'value1' },
+            ops: { status: 'added', value: 'vops' },
+            doge: {
+              status: 'object',
+              value: {
+                wow: { status: 'changed', oldValue: '', newValue: 'so much' },
+              },
+            },
+          },
         },
       },
     },
     group1: {
-      baz: { status: 'changed', oldValue: 'bas', newValue: 'bars' },
-      foo: { status: 'unchanged', value: 'bar' },
-      nest: { status: 'changed', oldValue: { key: 'value' }, newValue: 'str' },
+      status: 'object',
+      value: {
+        baz: { status: 'changed', oldValue: 'bas', newValue: 'bars' },
+        foo: { status: 'unchanged', value: 'bar' },
+        nest: { status: 'changed', oldValue: { key: 'value' }, newValue: 'str' },
+      },
     },
     group2: {
       status: 'deleted',
