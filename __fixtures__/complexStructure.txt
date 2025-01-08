@@ -1,0 +1,27 @@
+common:
+  setting1: Value 1
+  setting2: 200
+  setting3: changed
+    - setting3: true
+    + setting3: null
+  setting6:
+    doge:
+      wow: changed
+        - wow: ""
+        + wow: so much
+    key: value
+  group1:
+    baz: changed
+      - baz: bas
+      + baz: bars
+    foo: Value 1
+  nest: changed
+    - nest: { key: value }
+    + nest: str
+  group3:
+    deep:
+      id: changed
+        - id: 45
+        + id: { number: 45 }
+    fee: added
+      + fee: 100500
