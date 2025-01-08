@@ -1,38 +1,20 @@
-import parseFiles from '../src/parsers.js';
+import path from 'path';
+import fileReader from '../src/fileReader.js';
 
-const nullResult = [null, null];
+const getFixturesPath = (filename) => path.join(process.cwd(), '__fixtures__', filename);
+const json1 = getFixturesPath('file1.json');
+const json2 = getFixturesPath('file2.json');
+const yaml1 = getFixturesPath('file1.yaml');
+const yaml2 = getFixturesPath('file2.yaml');
 
-test('without extention', () => {
-  const path1 = './src/data/file1';
-  const path2 = './src/data/file2.json';
-
-  expect(parseFiles(path1, path2)).toEqual(nullResult);
+test('extention problems', () => {
+  expect(fileReader(json1, yaml1)).toEqual([null, null]);
 });
 
-test('yaml files', () => {
-  const path1 = './src/data/file1.json';
-  const path2 = './src/data/file2.yaml';
+test('correct extention', () => {
+  const [, , extJson] = fileReader(json1, json2);
+  const [, , extYaml] = fileReader(yaml1, yaml2);
 
-  expect(parseFiles(path1, path2)).toEqual(nullResult);
-});
-
-test('result is array', () => {
-  const path1 = './src/data/file1.json';
-  const path2 = './src/data/file2.json';
-
-  expect(parseFiles(path1, path2)).toBeInstanceOf(Array);
-});
-
-test('typeof parsing json results', () => {
-  const path1 = './src/data/file1.json';
-  const path2 = './src/data/file2.json';
-  const [file1, file2] = parseFiles(path1, path2);
-  expect(file1 && file2).toBeInstanceOf(Object);
-});
-
-test('typeof parsing yaml results', () => {
-  const path1 = './src/data/file1.yaml';
-  const path2 = './src/data/file2.yaml';
-  const [file1, file2] = parseFiles(path1, path2);
-  expect(file1 && file2).toBeInstanceOf(Object);
+  expect(extJson).toBe('json');
+  expect(extYaml).toBe('yaml');
 });
