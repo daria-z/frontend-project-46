@@ -1,3 +1,5 @@
+import { isPlainObject } from 'lodash-es';
+
 export const formatString = (key, {
   status, value, oldValue, newValue,
 }) => {
@@ -11,23 +13,31 @@ export const formatString = (key, {
     case 'added':
       return `  + ${key}: ${value}`;
     default:
-      return 'error';
+      return `    ${key}: ${value}`;
   }
 };
 
 const transformToString = (obj) => {
   const arrayOfLines = Object.entries(obj);
 
-  const formatLines = arrayOfLines.map(([key, {
-    status, value, oldValue, newValue,
-  }]) => {
-    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-      return formatString(key, {
-        status, value, oldValue, newValue,
-      });
+  const formatLines = arrayOfLines.map((entry) => {
+    const [key, data] = entry;
+
+    if (!isPlainObject(data)) {
+      return `    ${key}: ${data}`;
     }
 
-    return `${key}: {\n${transformToString(value)}\n}`;
+    const {
+      status, value, oldValue, newValue,
+    } = data;
+
+    if (isPlainObject(data) && status === 'object') {
+      return `${key}: {\n${transformToString(value)}\n}`;
+    }
+
+    return formatString(key, {
+      status, value, oldValue, newValue,
+    });
   });
 
   return `{\n${formatLines.join('\n')}\n}`;
