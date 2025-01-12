@@ -1,46 +1,46 @@
+/* eslint-disable no-use-before-define */
 import { isPlainObject } from 'lodash-es';
 
-export const formatString = (key, {
+export const formatDiffLine = (key, {
   status, value, oldValue, newValue,
 }) => {
   switch (status) {
+    case 'object':
+      return `    ${key}: {${formatObjectDiff(value)}}`;
     case 'unchanged':
-      return `    ${key}: ${value}`;
+      return `    ${key}: ${formatValue(value)}`;
     case 'changed':
-      return `  - ${key}: ${oldValue}\n  + ${key}: ${newValue}`;
+      return `  - ${key}: ${formatValue(oldValue)}\n  + ${key}: ${formatValue(newValue)}`;
     case 'deleted':
-      return `  - ${key}: ${value}`;
+      return `  - ${key}: ${formatValue(value)}`;
     case 'added':
-      return `  + ${key}: ${value}`;
+      return `  + ${key}: ${formatValue(value)}`;
     default:
-      return `    ${key}: ${value}`;
+      throw new Error(`Unknown status: ${status}`);
   }
 };
 
-const transformToString = (obj) => {
-  const arrayOfLines = Object.entries(obj);
-
-  const formatLines = arrayOfLines.map((entry) => {
-    const [key, data] = entry;
-
-    if (!isPlainObject(data)) {
-      return `    ${key}: ${data}`;
-    }
-
-    const {
-      status, value, oldValue, newValue,
-    } = data;
-
-    if (isPlainObject(data) && status === 'object') {
-      return `${key}: {\n${transformToString(value)}\n}`;
-    }
-
-    return formatString(key, {
-      status, value, oldValue, newValue,
-    });
-  });
-
-  return `{\n${formatLines.join('\n')}\n}`;
+const formatValue = (value) => {
+  if (value === null) return 'null';
+  if (isPlainObject(value)) {
+    return formatPlainObject(value);
+  }
+  if (Array.isArray(value)) return `[${value.map((item) => formatValue(item)).join(', ')}]`;
+  return String(value);
 };
 
-export default transformToString;
+const formatPlainObject = (obj) => {
+  const lines = Object.entries(obj)
+    .map(([key, value]) => `${key}: ${formatValue(value)}`);
+  return `{${lines.join('\n')}}`;
+};
+
+const formatObjectDiff = (obj) => {
+  const lines = Object.entries(obj).map(([key, data]) => formatDiffLine(key, data));
+
+  return `${lines.join('\n')}`;
+};
+
+const wrappedResult = (obj) => `{\n${formatObjectDiff(obj)}\n}`;
+
+export default wrappedResult;

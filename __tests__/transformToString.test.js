@@ -1,24 +1,24 @@
-import transformToString, { formatString } from '../src/transformToString.js';
+import transformToString, { formatDiffLine } from '../src/transformToString.js';
 
 test('simple string', () => {
   const key = 'verbose';
   const valueObject = { status: 'added', value: true };
   const result = '  + verbose: true';
-  expect(formatString(key, valueObject)).toEqual(result);
+  expect(formatDiffLine(key, valueObject)).toEqual(result);
 });
 
 test('string changed', () => {
   const key = 'timeout';
   const valueObject = { status: 'changed', oldValue: '50', newValue: '20' };
   const result = '  - timeout: 50\n  + timeout: 20';
-  expect(formatString(key, valueObject)).toEqual(result);
+  expect(formatDiffLine(key, valueObject)).toEqual(result);
 });
 
 test('string unchanged', () => {
   const key = 'timeout';
   const valueObject = { status: 'unchanged', value: '50' };
   const result = '    timeout: 50';
-  expect(formatString(key, valueObject)).toEqual(result);
+  expect(formatDiffLine(key, valueObject)).toEqual(result);
 });
 
 test('few strings', () => {
