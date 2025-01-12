@@ -11,11 +11,11 @@ export default () => {
     .version('1.0.0', '-V, --version', 'output the version number')
     .option('-f, --format [type]', 'output format')
     .arguments('<path1> <path2>')
-    .action((path1, path2, option) => {
+    .action((path1, path2, options) => {
       const absolutePath1 = path.resolve(process.cwd(), path1);
       const absolutePath2 = path.resolve(process.cwd(), path2);
 
-      console.log(gendiff(absolutePath1, absolutePath2, option));
+      console.log(gendiff(absolutePath1, absolutePath2, options.format));
     });
 
   return program;
