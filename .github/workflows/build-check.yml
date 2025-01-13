@@ -3,6 +3,9 @@ name: build-check
 on:
   push:
 
+env:
+  CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
