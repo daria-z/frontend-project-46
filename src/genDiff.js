@@ -10,6 +10,8 @@ export default (path1, path2, format) => {
   switch (format) {
     case 'plain':
       return formatToPlain(diff);
+    case 'stylish':
+      return formatToString(diff);
     default:
       return formatToString(diff);
   }

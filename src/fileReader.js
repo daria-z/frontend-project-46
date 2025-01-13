@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-// import parser from './parsers.js';
 
 export default (path1, path2) => {
   const getExtension = (filePath) => path.extname(filePath);
