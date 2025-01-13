@@ -2,21 +2,21 @@ import { isPlainObject } from 'lodash-es';
 
 const indent = (depth, option = 0) => ' '.repeat(depth * 4 - option);
 
+const formatValue = (value, depth) => {
+  if (value === null) return 'null';
+
+  if (isPlainObject(value)) {
+    const lines = Object.entries(value).map(([key, localValue]) => `${indent(depth + 1)}${key}: ${formatValue(localValue, depth + 1)}`);
+    return `{\n${lines.join('\n')}\n${indent(depth)}}`;
+  }
+
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => formatValue(item, depth)).join(',')}]`;
+  }
+  return String(value);
+};
+
 const formatToString = (initialObject) => {
-  const formatValue = (value, depth) => {
-    if (value === null) return 'null';
-
-    if (isPlainObject(value)) {
-      const lines = Object.entries(value).map(([key, localValue]) => `${indent(depth)}${key}: ${formatValue(localValue, depth)}`);
-      return `{\n${lines.join('\n')}\n${indent(depth - 1)}}`;
-    }
-
-    if (Array.isArray(value)) {
-      return `[${value.map((item) => formatValue(item, depth)).join(',')}]`;
-    }
-    return String(value);
-  };
-
   const formatDiff = (obj, initialDepth) => {
     const formatLine = (key, {
       status, value, oldValue, newValue,
@@ -38,7 +38,7 @@ const formatToString = (initialObject) => {
     };
     const lines = Object.entries(obj).map(([key, data]) => formatLine(key, data, initialDepth));
 
-    return `{\n${lines.join('\n')}\n}`;
+    return `${lines.join('\n')}`;
   };
 
   return `{\n${formatDiff(initialObject)}\n}`;
