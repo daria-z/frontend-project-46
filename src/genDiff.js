@@ -12,6 +12,8 @@ export default (path1, path2, format) => {
       return formatToPlain(diff);
     case 'stylish':
       return formatToString(diff);
+    case 'json':
+      return JSON.stringify(diff, '', 2);
     default:
       return formatToString(diff);
   }
