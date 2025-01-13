@@ -1,17 +1,20 @@
-// import genDiff from '../src/genDiff.js';
+import fs from 'fs';
+import path from 'path';
+import gendiff from '../src/genDiff.js';
 
-// const path1 = './src/data/file1.json';
-// const path2 = './src/data/file2.json';
+const getFixturesPath = (filename) => path.join(process.cwd(), '__fixtures__', filename);
+const expectedStylish = fs.readFileSync(getFixturesPath('expected_stylish.txt'), 'utf-8');
+const expectedPlain = fs.readFileSync(getFixturesPath('expected_plain.txt'), 'utf-8');
 
-// const expected = [
-//   ['-', 'follow', false],
-//   [' ', 'host', 'hexlet.io'],
-//   ['-', 'proxy', '123.234.53.22'],
-//   ['-', 'timeout', 50],
-//   ['+', 'timeout', 20],
-//   ['+', 'verbose', true],
-// ];
+const json1 = getFixturesPath('file1.json');
+const json2 = getFixturesPath('file2.json');
 
-test('gendiff is working', () => {
-  expect(true).toEqual(true);
+test('gendiff stylish format', () => {
+  const result = gendiff(json1, json2);
+  expect(result).toEqual(expectedStylish.trim());
+});
+
+test('gendiff plain format', () => {
+  const result = gendiff(json1, json2, 'plain');
+  expect(result).toEqual(expectedPlain.trim());
 });

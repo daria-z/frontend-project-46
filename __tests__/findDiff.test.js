@@ -159,6 +159,6 @@ test('deep difference', () => {
       },
     },
   };
-
+  // console.log(JSON.stringify(findDiff(file1, file2), ' ', 2));
   expect(findDiff(file1, file2)).toEqual(expected);
 });
