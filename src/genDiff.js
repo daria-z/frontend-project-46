@@ -9,7 +9,6 @@ export default (path1, path2, format) => {
 
   switch (format) {
     case 'plain':
-      console.log('plain format');
       return formatToPlain(diff);
     default:
       return formatToString(diff);
