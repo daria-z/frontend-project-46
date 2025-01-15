@@ -18,8 +18,9 @@ export default (path1, path2) => {
     case '.json':
       return [file1, file2, 'json'];
     case '.yaml':
-    case '.yml':
       return [file1, file2, 'yaml'];
+    case '.yml':
+      return [file1, file2, 'yml'];
     default:
       return [null, null];
   }
