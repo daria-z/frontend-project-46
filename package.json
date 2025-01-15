@@ -17,9 +17,7 @@
   "author": "Daria Zakirova",
   "license": "ISC",
   "lint-staged": {
-    "*.js": [
-      "eslint"
-    ]
+    "*.js": "eslint --fix"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
