@@ -16,7 +16,7 @@ const formatValue = (value, depth) => {
   return String(value);
 };
 
-const formatToString = (initialObject) => {
+export default (initialObject) => {
   const formatDiff = (obj, initialDepth) => {
     const formatLine = (key, {
       status, value, oldValue, newValue,
@@ -43,5 +43,3 @@ const formatToString = (initialObject) => {
 
   return `{\n${formatDiff(initialObject)}\n}`;
 };
-
-export default formatToString;

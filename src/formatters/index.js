@@ -1,4 +1,4 @@
-import formatToString from './formatToString.js';
+import formatToStylish from './formatToStylish.js';
 import formatToPlain from './formatToPlain.js';
 
-export { formatToString, formatToPlain };
+export { formatToStylish, formatToPlain };
