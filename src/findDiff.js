@@ -1,7 +1,9 @@
-import { isPlainObject, keys, union } from 'lodash-es';
+import {
+  isPlainObject, keys, union, sortBy,
+} from 'lodash-es';
 
 const findDiff = (obj1, obj2) => {
-  const keysArray = [...union(keys(obj1), keys(obj2))].sort();
+  const keysArray = sortBy(union(keys(obj1), keys(obj2)));
 
   return keysArray.reduce((result, key) => {
     const isDeleted = keys(obj1).includes(key);
