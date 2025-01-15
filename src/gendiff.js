@@ -1,22 +1,20 @@
-import path from 'path';
-import { Command } from 'commander';
-import formatDiff from './formatDiff.js';
+import parseFiles from './parsers.js';
+import findDiff from './findDiff.js';
+import fileReader from './fileReader.js';
+import { formatToStylish, formatToPlain } from './formatters/index.js';
 
-const program = new Command();
+export default (path1, path2, format) => {
+  const [file1, file2] = parseFiles(fileReader(path1, path2));
+  const diff = findDiff(file1, file2);
 
-export default () => {
-  program
-    .name('gendiff')
-    .description('Compares two configuration files and shows a difference.')
-    .version('1.0.0', '-V, --version', 'output the version number')
-    .option('-f, --format [type]', 'output format', 'stylish')
-    .arguments('<path1> <path2>')
-    .action((path1, path2, options) => {
-      const absolutePath1 = path.resolve(process.cwd(), path1);
-      const absolutePath2 = path.resolve(process.cwd(), path2);
-
-      console.log(formatDiff(absolutePath1, absolutePath2, options.format));
-    });
-
-  return program;
+  switch (format) {
+    case 'plain':
+      return formatToPlain(diff);
+    case 'stylish':
+      return formatToStylish(diff);
+    case 'json':
+      return JSON.stringify(diff, '', 2);
+    default:
+      return formatToStylish(diff);
+  }
 };
