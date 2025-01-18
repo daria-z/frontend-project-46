@@ -4,11 +4,15 @@ import fs from 'fs';
 export default (path1, path2) => {
   const getExtension = (filePath) => path.extname(filePath);
 
+  if (!fs.existsSync(path1) || !fs.existsSync(path2)) {
+    throw new Error('File not found.');
+  }
+
   const ext1 = getExtension(path1);
   const ext2 = getExtension(path2);
 
   if (ext1 !== ext2) {
-    return [null, null];
+    throw new Error('Files extensions do not match');
   }
 
   const file1 = fs.readFileSync(path1, 'utf-8');
@@ -22,6 +26,6 @@ export default (path1, path2) => {
     case '.yml':
       return [file1, file2, 'yml'];
     default:
-      return [null, null];
+      throw new Error(`Unsupported file extension: ${ext1}`);
   }
 };

@@ -15,6 +15,6 @@ export default (path1, path2, format = 'stylish') => {
     case 'json':
       return JSON.stringify(diff, '', 2);
     default:
-      return formatToStylish(diff);
+      throw new Error(`Unknown format: ${format}`);
   }
 };

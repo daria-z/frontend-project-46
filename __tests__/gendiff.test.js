@@ -24,3 +24,7 @@ test('gendiff json format', () => {
   const result = genDiff(json1, json2, 'json');
   expect(result).toEqual(expectedJson.trim());
 });
+
+test('gendiff unknown format', () => {
+  expect(() => genDiff(json1, json2, 'txt')).toThrow('Unknown format: txt');
+});

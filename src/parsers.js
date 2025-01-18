@@ -8,6 +8,6 @@ export default ([file1, file2, extension]) => {
     case 'yml':
       return [yaml.load(file1), yaml.load(file2)];
     default:
-      return [null, null];
+      throw new Error(`Unsupported file extension: ${extension}.`);
   }
 };
