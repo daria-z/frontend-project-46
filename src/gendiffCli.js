@@ -1,4 +1,3 @@
-import path from 'path';
 import { Command } from 'commander';
 import genDiff from './gendiff.js';
 
@@ -12,10 +11,7 @@ export default () => {
     .option('-f, --format [type]', 'output format', 'stylish')
     .arguments('<path1> <path2>')
     .action((path1, path2, options) => {
-      const absolutePath1 = path.resolve(process.cwd(), path1);
-      const absolutePath2 = path.resolve(process.cwd(), path2);
-
-      console.log(genDiff(absolutePath1, absolutePath2, options.format));
+      console.log(genDiff(path1, path2, options.format));
     });
 
   return program;
