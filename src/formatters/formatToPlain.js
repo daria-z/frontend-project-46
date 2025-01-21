@@ -25,7 +25,7 @@ const formatPlain = (initialObject) => {
         case 'added':
           return `Property '${nodePath}' was added with value: ${formatValue(value)}`;
         default:
-          throw new Error('Status error');
+          throw new Error(`Unknown status ${status}`);
       }
     });
 

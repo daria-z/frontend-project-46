@@ -31,7 +31,7 @@ export default (initialObject) => {
         case 'added':
           return `${indent(depth, 2)}+ ${key}: ${formatValue(value, depth)}`;
         default:
-          throw new Error('Status error');
+          throw new Error(`Unknown status ${status}`);
       }
     };
     const lines = Object.entries(obj).map(([key, data]) => formatLine(key, data, initialDepth));
