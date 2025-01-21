@@ -3,8 +3,6 @@ import { isPlainObject } from 'lodash-es';
 const indent = (depth, option = 0) => ' '.repeat(depth * 4 - option);
 
 const formatValue = (value, depth) => {
-  if (value === null) return 'null';
-
   if (isPlainObject(value)) {
     const lines = Object.entries(value).map(([key, localValue]) => `${indent(depth + 1)}${key}: ${formatValue(localValue, depth + 1)}`);
     return `{\n${lines.join('\n')}\n${indent(depth)}}`;

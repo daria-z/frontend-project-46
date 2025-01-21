@@ -2,7 +2,6 @@ import { isPlainObject } from 'lodash-es';
 
 const formatPlain = (initialObject) => {
   const formatValue = (value) => {
-    if (value === null) return 'null';
     if (isPlainObject(value) || Array.isArray(value)) return '[complex value]';
     if (typeof value === 'string') return `'${value}'`;
     return String(value);
